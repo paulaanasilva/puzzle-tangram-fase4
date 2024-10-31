@@ -8,181 +8,136 @@ const DUDE_KEY = 'dude'
 const STAR_KEY = 'star'
 const BOMB_KEY = 'bomb'
 
-export class GameScene extends Scene
-{
-	player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-	cursors: Phaser.Types.Input.Keyboard.CursorKeys;
-	scoreLabel: ScoreLabel;
-	stars: Phaser.Physics.Arcade.Group;
-	bombSpawner: BombSpawner;
-	gameOver: boolean;
+export class GameScene extends Scene {
+	triangle: Phaser.GameObjects.Image;
+	retangulo: Phaser.GameObjects.Image;
+	selectedShape: Phaser.GameObjects.Image | null = null;
+	selectionOutline: Phaser.GameObjects.Graphics | null = null;
 
-    constructor ()
-    {
-        super('GameScene');
-		this.gameOver = false
+	constructor() {
+		super('GameScene');
+	}
 
-    }
-
-    preload (){
+	preload() {
 		this.load.image('sky', 'assets/sky.png')
-		this.load.image(GROUND_KEY, 'assets/platform.png')
-		this.load.image(STAR_KEY, 'assets/star.png')
-		this.load.image('bomb', 'assets/bomb.png')
-		this.load.image(BOMB_KEY, 'assets/bomb.png')
+		this.load.image('triangulo', 'assets/triangulo.png')
+		this.load.image('retangulo', 'assets/retangulo.png')
+	}
 
-		this.load.spritesheet(DUDE_KEY, 
-			'assets/dude.png',
-			{ frameWidth: 32, frameHeight: 48 }
-		)
-    }
+	create() {
+		this.add.image(400, 300, 'sky')
 
-    create ()
-    {
-        this.add.image(400, 300, 'sky')
+		this.triangle = this.createTriangle();
+		this.retangulo = this.createRetangulo();
 
-        const platforms = this.createPlatforms()
-        this.player = this.createPlayer()
-		this.stars = this.createStars()
+		this.createButton(400, 500, 'Clique Aqui', () => {
+			this.rotateSelectedShape();
+		});
 
-        this.scoreLabel = this.createScoreLabel(16, 16, 0)
+		this.selectionOutline = this.add.graphics();
 
-		this.bombSpawner = new BombSpawner(this, BOMB_KEY)
-		const bombsGroup = this.bombSpawner.group
-        
-        this.physics.add.collider(this.player, platforms)
-        this.physics.add.collider(this.stars, platforms)
-		this.physics.add.collider(bombsGroup, platforms)
-		this.physics.add.collider(this.player, bombsGroup, this.hitBomb, null, this)
-
-		this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this)
-
-		this.cursors = this.input.keyboard!.createCursorKeys()
-    }
-
-    collectStar(player, star)
-	{
-		star.disableBody(true, true)
-
-        this.scoreLabel.add(10)
-
-		if (this.stars.countActive(true) === 0)
-			{
-				//  A new batch of stars to collect
-				this.stars.children.iterate((child) => {
-					child.enableBody(true, child.x, 0, true, true)
-				})
+		// Adiciona evento de clique na cena para desmarcar a seleção
+		this.input.on('pointerdown', (pointer, currentlyOver) => {
+			if (currentlyOver.length === 0) {
+				this.deselectShape();
 			}
-		
-		this.bombSpawner.spawn(player.x)
+		});
 	}
 
-    createStars()
-	{
-		const stars = this.physics.add.group({
-			key: STAR_KEY,
-			repeat: 11,
-			setXY: { x: 12, y: 0, stepX: 70 }
-		})
-		
-		stars.children.iterate((child) => {
-			child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8))
-		})
+	createButton(x, y, text, callback) {
+		const button = this.add.text(x, y, text, {
+			fontSize: '32px',
+			fill: '#fff',
+			backgroundColor: '#000',
+			padding: { x: 10, y: 5 },
+		}).setInteractive();
 
-		return stars
+		button.on('pointerdown', callback);
+
+		button.on('pointerover', () => {
+			button.setStyle({ fill: '#ff0' });
+		});
+
+		button.on('pointerout', () => {
+			button.setStyle({ fill: '#fff' });
+		});
 	}
 
-    createScoreLabel(x, y, score)
-	{
-		const style = { fontSize: '32px', fill: '#000' }
-		const label = new ScoreLabel(this, x, y, score, style)
+	createTriangle() {
+		const triangle = this.add.image(200, 100, 'triangulo');
+		triangle.setScale(0.5);
+		triangle.setInteractive();
+		this.input.setDraggable(triangle);
 
-		this.add.existing(label)
+		triangle.on('pointerdown', () => {
+			this.selectedShape = triangle;
+		});
 
-		return label
+		this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+			gameObject.x = dragX;
+			gameObject.y = dragY;
+			this.updateSelectionOutline();
+		});
+
+		return triangle;
 	}
 
-    update()
-	{
-		if (this.gameOver)
-			{
-				return
-			}
+	createRetangulo() {
+		const retangulo = this.add.image(400, 100, 'retangulo');
+		retangulo.setScale(0.5);
+		retangulo.setInteractive();
+		this.input.setDraggable(retangulo);
 
-		if (this.cursors.left.isDown)
-		{
-			this.player.setVelocityX(-160)
+		retangulo.on('pointerdown', () => {
+			this.selectedShape = retangulo;
+		});
 
-			this.player.anims.play('left', true)
-		}
-		else if (this.cursors.right.isDown)
-		{
-			this.player.setVelocityX(160)
+		this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+			gameObject.x = dragX;
+			gameObject.y = dragY;
+			this.updateSelectionOutline();
+		});
 
-			this.player.anims.play('right', true)
-		}
-		else
-		{
-			this.player.setVelocityX(0)
-
-			this.player.anims.play('turn')
-		}
-
-		if (this.cursors.up.isDown && this.player.body.touching.down)
-		{
-			this.player.setVelocityY(-330)
-		}
+		return retangulo;
 	}
 
-	hitBomb(player, bomb)
-	{
-		this.physics.pause()
-
-		player.setTint(0xff0000)
-
-		player.anims.play('turn')
-
-		this.gameOver = true
+	selectShape(shape: Phaser.GameObjects.Image) {
+		this.selectedShape = shape;
+		this.updateSelectionOutline();
 	}
 
-    createPlatforms(){
-        const platforms = this.physics.add.staticGroup()
-
-        platforms.create(400, 568, GROUND_KEY).setScale(2).refreshBody()
-
-		platforms.create(600, 400, GROUND_KEY)
-		platforms.create(50, 250, GROUND_KEY)
-		platforms.create(750, 220, GROUND_KEY)
-
-        return platforms
+	deselectShape() {
+        this.selectedShape = null;
+        if (this.selectionOutline) {
+            this.selectionOutline.clear();
+        }
     }
 
-    createPlayer(){
-		const player = this.physics.add.sprite(100, 450, DUDE_KEY)
-		player.setBounce(0.2)
-		player.setCollideWorldBounds(true)
+	updateSelectionOutline() {
+		if (this.selectionOutline && this.selectedShape) {
+			this.selectionOutline.clear();
+			this.selectionOutline.lineStyle(2, 0xff0000);
 
-		this.anims.create({
-			key: 'left',
-			frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 0, end: 3 }),
-			frameRate: 10,
-			repeat: -1
-		})
-		
-		this.anims.create({
-			key: 'turn',
-			frames: [ { key: DUDE_KEY, frame: 4 } ],
-			frameRate: 20
-		})
-		
-		this.anims.create({
-			key: 'right',
-			frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 5, end: 8 }),
-			frameRate: 10,
-			repeat: -1
-		})
+			const rect = new Phaser.Geom.Rectangle(
+				-this.selectedShape.displayWidth / 2,
+				-this.selectedShape.displayHeight / 2,
+				this.selectedShape.displayWidth,
+				this.selectedShape.displayHeight
+			);
 
-        return player
-    }
+			this.selectionOutline.strokeRectShape(rect);
+			this.selectionOutline.setPosition(this.selectedShape.x, this.selectedShape.y);
+			this.selectionOutline.setRotation(this.selectedShape.rotation);
+		} else if (this.selectionOutline) {
+            this.selectionOutline.clear();
+        }
+	}
+
+	rotateSelectedShape() {
+		if (this.selectedShape) {
+			this.selectedShape.rotation += Phaser.Math.DegToRad(90);
+			this.updateSelectionOutline();
+		}
+	}
 
 }
