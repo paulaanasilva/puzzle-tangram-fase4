@@ -1,12 +1,4 @@
 import { Scene } from 'phaser';
-import ScoreLabel from '../ui/ScoreLabel';
-import BombSpawner from './BombSpawner';
-
-
-const GROUND_KEY = 'ground'
-const DUDE_KEY = 'dude'
-const STAR_KEY = 'star'
-const BOMB_KEY = 'bomb'
 
 export class GameScene extends Scene {
 	triangle: Phaser.GameObjects.Image;
