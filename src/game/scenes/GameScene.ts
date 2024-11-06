@@ -1,13 +1,18 @@
 import { Scene } from 'phaser';
+import UpdateElements from './class/updateElements';
 
 export class GameScene extends Scene {
+
+    updateElements: UpdateElements;
+
 	triangle: Phaser.GameObjects.Image;
 	retangulo: Phaser.GameObjects.Image;
-	selectedShape: Phaser.GameObjects.Image | null = null;
-	selectionOutline: Phaser.GameObjects.Graphics | null = null;
+	selectedShape: Phaser.GameObjects.Image;
+	selectionOutline: Phaser.GameObjects.Graphics;
 
 	constructor() {
 		super('GameScene');
+        this.updateElements = new UpdateElements();
 	}
 
 	preload() {
@@ -28,7 +33,6 @@ export class GameScene extends Scene {
 
 		this.selectionOutline = this.add.graphics();
 
-		// Adiciona evento de clique na cena para desmarcar a seleção
 		this.input.on('pointerdown', (pointer, currentlyOver) => {
 			if (currentlyOver.length === 0) {
 				this.deselectShape();
@@ -68,7 +72,7 @@ export class GameScene extends Scene {
 		this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
 			gameObject.x = dragX;
 			gameObject.y = dragY;
-			this.updateSelectionOutline();
+			this.updateElements.updateSelectionOutline(this.selectedShape, this.selectionOutline);
 		});
 
 		return triangle;
@@ -87,7 +91,7 @@ export class GameScene extends Scene {
 		this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
 			gameObject.x = dragX;
 			gameObject.y = dragY;
-			this.updateSelectionOutline();
+			this.updateElements.updateSelectionOutline(this.selectedShape, this.selectionOutline);
 		});
 
 		return retangulo;
@@ -95,7 +99,7 @@ export class GameScene extends Scene {
 
 	selectShape(shape: Phaser.GameObjects.Image) {
 		this.selectedShape = shape;
-		this.updateSelectionOutline();
+		this.updateElements.updateSelectionOutline(this.selectedShape, this.selectionOutline);
 	}
 
 	deselectShape() {
@@ -105,30 +109,10 @@ export class GameScene extends Scene {
         }
     }
 
-	updateSelectionOutline() {
-		if (this.selectionOutline && this.selectedShape) {
-			this.selectionOutline.clear();
-			this.selectionOutline.lineStyle(2, 0xff0000);
-
-			const rect = new Phaser.Geom.Rectangle(
-				-this.selectedShape.displayWidth / 2,
-				-this.selectedShape.displayHeight / 2,
-				this.selectedShape.displayWidth,
-				this.selectedShape.displayHeight
-			);
-
-			this.selectionOutline.strokeRectShape(rect);
-			this.selectionOutline.setPosition(this.selectedShape.x, this.selectedShape.y);
-			this.selectionOutline.setRotation(this.selectedShape.rotation);
-		} else if (this.selectionOutline) {
-            this.selectionOutline.clear();
-        }
-	}
-
 	rotateSelectedShape() {
 		if (this.selectedShape) {
 			this.selectedShape.rotation += Phaser.Math.DegToRad(90);
-			this.updateSelectionOutline();
+			this.updateElements.updateSelectionOutline(this.selectedShape, this.selectionOutline);
 		}
 	}
 
