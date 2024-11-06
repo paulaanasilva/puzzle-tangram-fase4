@@ -1,5 +1,3 @@
-import { Scene } from 'phaser';
-
 
 export default class UpdateElements {
     updateSelectionOutline(selectedShape: Phaser.GameObjects.Image, selectionOutline: Phaser.GameObjects.Graphics) {

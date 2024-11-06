@@ -1,17 +1,32 @@
-import { Scene } from 'phaser';
+// src/game/scenes/class/ShapeActions.ts
+import Phaser from 'phaser';
+import UpdateElements from './updateElements';
 
-export function selectShape(scene: Scene, shape: Phaser.GameObjects.Image) {
-    scene.selectedShape = shape;
-    scene.updateSelectionOutline();
-}
+export default class ShapeActions {
+    private scene: Phaser.Scene;
+    private updateElements: UpdateElements;
 
-export function deselectShape(scene: Scene) {
-    scene.selectedShape = null;
-    scene.updateSelectionOutline();
-}
+    constructor(scene: Phaser.Scene, updateElements: UpdateElements) {
+        this.scene = scene;
+        this.updateElements = updateElements;
+    }
 
-export function rotateSelectedShape(scene: Scene) {
-    if (scene.selectedShape) {
-        scene.selectedShape.angle += 15;
+    selectShape(shape: Phaser.GameObjects.Image) {
+        this.scene.selectedShape = shape;
+        this.updateElements.updateSelectionOutline(this.scene.selectedShape, this.scene.selectionOutline);
+    }
+
+    deselectShape() {
+        this.scene.selectedShape = null;
+        if (this.scene.selectionOutline) {
+            this.scene.selectionOutline.clear();
+        }
+    }
+
+    rotateSelectedShape() {
+        if (this.scene.selectedShape) {
+            this.scene.selectedShape.rotation += Phaser.Math.DegToRad(90);
+            this.updateElements.updateSelectionOutline(this.scene.selectedShape, this.scene.selectionOutline);
+        }
     }
 }

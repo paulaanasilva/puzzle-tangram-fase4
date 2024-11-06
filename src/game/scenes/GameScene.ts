@@ -1,9 +1,14 @@
 import { Scene } from 'phaser';
 import UpdateElements from './class/updateElements';
+import CreateElements from './class/createElements';
+import ShapeActions from './class/shapeActions';
 
 export class GameScene extends Scene {
 
     updateElements: UpdateElements;
+	createElements: CreateElements;
+	shapeActions: ShapeActions;
+
 
 	triangle: Phaser.GameObjects.Image;
 	retangulo: Phaser.GameObjects.Image;
@@ -13,6 +18,8 @@ export class GameScene extends Scene {
 	constructor() {
 		super('GameScene');
         this.updateElements = new UpdateElements();
+		this.createElements = new CreateElements(this, this.updateElements);
+		this.shapeActions = new ShapeActions(this, this.updateElements);
 	}
 
 	preload() {
@@ -24,96 +31,20 @@ export class GameScene extends Scene {
 	create() {
 		this.add.image(400, 300, 'sky')
 
-		this.triangle = this.createTriangle();
-		this.retangulo = this.createRetangulo();
+		this.triangle = this.createElements.createTriangle();
+		this.retangulo = this.createElements.createRetangulo();
 
-		this.createButton(400, 500, 'Clique Aqui', () => {
-			this.rotateSelectedShape();
+		this.createElements.createButton(400, 500, 'Clique Aqui', () => {
+			this.shapeActions.rotateSelectedShape();
 		});
 
 		this.selectionOutline = this.add.graphics();
 
-		this.input.on('pointerdown', (pointer, currentlyOver) => {
+		this.input.on('pointerdown', (_, currentlyOver: Phaser.GameObjects.GameObject[]) => {
 			if (currentlyOver.length === 0) {
-				this.deselectShape();
+				this.shapeActions.deselectShape();
 			}
 		});
-	}
-
-	createButton(x, y, text, callback) {
-		const button = this.add.text(x, y, text, {
-			fontSize: '32px',
-			fill: '#fff',
-			backgroundColor: '#000',
-			padding: { x: 10, y: 5 },
-		}).setInteractive();
-
-		button.on('pointerdown', callback);
-
-		button.on('pointerover', () => {
-			button.setStyle({ fill: '#ff0' });
-		});
-
-		button.on('pointerout', () => {
-			button.setStyle({ fill: '#fff' });
-		});
-	}
-
-	createTriangle() {
-		const triangle = this.add.image(200, 100, 'triangulo');
-		triangle.setScale(0.5);
-		triangle.setInteractive();
-		this.input.setDraggable(triangle);
-
-		triangle.on('pointerdown', () => {
-			this.selectedShape = triangle;
-		});
-
-		this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-			gameObject.x = dragX;
-			gameObject.y = dragY;
-			this.updateElements.updateSelectionOutline(this.selectedShape, this.selectionOutline);
-		});
-
-		return triangle;
-	}
-
-	createRetangulo() {
-		const retangulo = this.add.image(400, 100, 'retangulo');
-		retangulo.setScale(0.5);
-		retangulo.setInteractive();
-		this.input.setDraggable(retangulo);
-
-		retangulo.on('pointerdown', () => {
-			this.selectedShape = retangulo;
-		});
-
-		this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-			gameObject.x = dragX;
-			gameObject.y = dragY;
-			this.updateElements.updateSelectionOutline(this.selectedShape, this.selectionOutline);
-		});
-
-		return retangulo;
-	}
-
-	selectShape(shape: Phaser.GameObjects.Image) {
-		this.selectedShape = shape;
-		this.updateElements.updateSelectionOutline(this.selectedShape, this.selectionOutline);
-	}
-
-	deselectShape() {
-        this.selectedShape = null;
-        if (this.selectionOutline) {
-            this.selectionOutline.clear();
-        }
-    }
-
-	rotateSelectedShape() {
-		if (this.selectedShape) {
-			this.selectedShape.rotation += Phaser.Math.DegToRad(90);
-			this.updateElements.updateSelectionOutline(this.selectedShape, this.selectionOutline);
-		}
 	}
 
 }
