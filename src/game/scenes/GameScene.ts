@@ -9,7 +9,8 @@ export class GameScene extends Scene {
 	createElements: CreateElements;
 	shapeActions: ShapeActions;
 
-
+	trianglePhaser: Phaser.GameObjects.Triangle;
+	square: Phaser.GameObjects.Rectangle;
 	triangle: Phaser.GameObjects.Image;
 	retangulo: Phaser.GameObjects.Image;
 	selectedShape: Phaser.GameObjects.Image;
@@ -33,6 +34,8 @@ export class GameScene extends Scene {
 
 		this.triangle = this.createElements.createTriangle();
 		this.retangulo = this.createElements.createRetangulo();
+		this.trianglePhaser = this.createElements.createTrianglePhaser();
+		this.square = this.createElements.createSquare();
 
 		this.createElements.createButton(400, 500, 'Clique Aqui', () => {
 			this.shapeActions.rotateSelectedShape();
