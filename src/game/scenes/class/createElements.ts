@@ -16,30 +16,23 @@ export default class CreateElements {
     createTrianglePhaser() {
         const triangle = this.scene.add.triangle(200, 100, 0, 0, 100, 0, 50, 100, 0xff69b4);
         triangle.setInteractive();
-        //this.scene.input.setDraggable(square);
-
+        this.scene.input.setDraggable(triangle);
 
         triangle.on('pointerdown', () => {
             this.scene.selectedShape = triangle;
         });
-        
+
         return triangle;
-      
     }
 
     createSquare() {
         const square = this.scene.add.rectangle(300, 400, 100, 200, 0xff69b4);
         square.setInteractive();
-        //this.scene.input.setDraggable(square);
+        this.scene.input.setDraggable(square);
+
 
         square.on('pointerdown', () => {
             this.scene.selectedShape = square;
-        });
-
-        this.scene.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-            gameObject.x = dragX;
-            gameObject.y = dragY;
-            this.updateElements.updateSelectionOutline(this.scene.selectedShape, this.scene.selectionOutline);
         });
 
         return square;
@@ -55,12 +48,6 @@ export default class CreateElements {
             this.scene.selectedShape = triangle;
         });
 
-        this.scene.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-            gameObject.x = dragX;
-            gameObject.y = dragY;
-            this.updateElements.updateSelectionOutline(this.scene.selectedShape, this.scene.selectionOutline);
-        });
-
         return triangle;
     }
 
@@ -72,12 +59,6 @@ export default class CreateElements {
 
         retangulo.on('pointerdown', () => {
             this.scene.selectedShape = retangulo;
-        });
-
-        this.scene.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-            gameObject.x = dragX;
-            gameObject.y = dragY;
-            this.updateElements.updateSelectionOutline(this.scene.selectedShape, this.scene.selectionOutline);
         });
 
         return retangulo;

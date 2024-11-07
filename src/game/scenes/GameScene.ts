@@ -61,7 +61,6 @@ export class GameScene extends Scene {
 			}
 		});
 		
-		
 		this.input.on('pointermove', (pointer) => {
             this.shapeActions.mouseRotateSelectedShape(pointer);
         });

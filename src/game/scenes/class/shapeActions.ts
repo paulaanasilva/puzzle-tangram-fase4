@@ -5,6 +5,8 @@ import UpdateElements from './updateElements';
 export default class ShapeActions {
     private scene: Phaser.Scene;
     private updateElements: UpdateElements;
+    private rotationSpeed: number = 0.01; // Velocidade de rotação
+
 
     constructor(scene: Phaser.Scene, updateElements: UpdateElements) {
         this.scene = scene;
@@ -25,17 +27,19 @@ export default class ShapeActions {
         }
     }
 
-    mouseRotateSelectedShape(pointer: Phaser.Input.Pointer) {
-        if (pointer.isDown && pointer.event.shiftKey && this.scene.selectedShape) {
-            const angle = Phaser.Math.Angle.Between(
+    mouseRotateSelectedShape(pointer: Phaser.Input.Pointer,) {
+        if (pointer.event.shiftKey && this.scene.selectedShape) {
+            const targetAngle = Phaser.Math.Angle.Between(
                 this.scene.selectedShape.x,
                 this.scene.selectedShape.y,
                 pointer.worldX,
                 pointer.worldY
             );
-            this.scene.selectedShape.setRotation(angle);
-            this.updateElements.updateSelectionOutline(this.scene.selectedShape, this.scene.selectionOutline);
-        
-        }
+
+            // Incrementa o ângulo de rotação gradualmente
+            const currentAngle = this.scene.selectedShape.rotation;
+            const deltaAngle = Phaser.Math.Angle.Wrap(targetAngle - currentAngle);
+            this.scene.selectedShape.setRotation(currentAngle + deltaAngle * this.rotationSpeed);
+        } 
     }
 }
