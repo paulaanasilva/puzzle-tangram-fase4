@@ -35,15 +35,14 @@ export class GameScene extends Scene {
 
 		const roda = this.add.image(600, 400, 'girar').setScale(0.5)
 		roda.setInteractive()
-
+		/*
 		this.input.on('pointermove', pointer => {
-			if (!pointer.isDown) {
+			if (pointer.isDown && pointer.event.shiftKey) {
 				const angle = Phaser.Math.Angle.Between(roda.x, roda.y, pointer.worldX, pointer.worldY);
 				roda.setRotation(angle);
 			}
 		});
-
-
+		*/
 		this.triangle = this.createElements.createTriangle();
 		this.retangulo = this.createElements.createRetangulo();
 		this.trianglePhaser = this.createElements.createTrianglePhaser();
@@ -55,11 +54,19 @@ export class GameScene extends Scene {
 
 		this.selectionOutline = this.add.graphics();
 
+		
 		this.input.on('pointerdown', (_, currentlyOver: Phaser.GameObjects.GameObject[]) => {
 			if (currentlyOver.length === 0) {
 				this.shapeActions.deselectShape();
 			}
 		});
+		
+		
+		this.input.on('pointermove', (pointer) => {
+            this.shapeActions.mouseRotateSelectedShape(pointer);
+        });
+		
+		
 	}
 
 }
