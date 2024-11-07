@@ -13,6 +13,30 @@ export default class CreateElements {
         this.updateElements = updateElements;
     }
 
+    createTrianglePhaser() {
+        const triangle = this.scene.add.triangle(200, 100, 0, 0, 100, 0, 50, 100, 0xff69b4);
+        triangle.setInteractive();
+        this.scene.input.setDraggable(triangle);
+
+        triangle.on('pointerdown', () => {
+            this.scene.selectedShape = triangle;
+        });
+
+        return triangle;
+    }
+
+    createSquare() {
+        const square = this.scene.add.rectangle(300, 400, 100, 200, 0xff69b4);
+        square.setInteractive();
+        this.scene.input.setDraggable(square);
+
+        square.on('pointerdown', () => {
+            this.scene.selectedShape = square;
+        });
+
+        return square;
+    }
+
     createTriangle() {
         const triangle = this.scene.add.image(200, 100, 'triangulo');
         triangle.setScale(0.5);
@@ -23,33 +47,21 @@ export default class CreateElements {
             this.scene.selectedShape = triangle;
         });
 
-        this.scene.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-            gameObject.x = dragX;
-            gameObject.y = dragY;
-            this.updateElements.updateSelectionOutline(this.scene.selectedShape, this.scene.selectionOutline);
-        });
-
         return triangle;
     }
 
     createRetangulo() {
-		const retangulo = this.scene.add.image(400, 100, 'retangulo');
-		retangulo.setScale(0.5);
-		retangulo.setInteractive();
-		this.scene.input.setDraggable(retangulo);
+        const retangulo = this.scene.add.image(400, 100, 'retangulo');
+        retangulo.setScale(0.5);
+        retangulo.setInteractive();
+        this.scene.input.setDraggable(retangulo);
 
-		retangulo.on('pointerdown', () => {
-			this.scene.selectedShape = retangulo;
-		});
+        retangulo.on('pointerdown', () => {
+            this.scene.selectedShape = retangulo;
+        });
 
-		this.scene.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-			gameObject.x = dragX;
-			gameObject.y = dragY;
-			this.updateElements.updateSelectionOutline(this.scene.selectedShape, this.scene.selectionOutline);
-		});
-
-		return retangulo;
-	}
+        return retangulo;
+    }
 
     createButton(x: number, y: number, text: string, callback: () => void) {
         const button = this.scene.add.text(x, y, text, {
@@ -72,5 +84,5 @@ export default class CreateElements {
         return button;
     }
 
-	
+
 }
