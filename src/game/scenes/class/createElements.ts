@@ -30,7 +30,6 @@ export default class CreateElements {
         square.setInteractive();
         this.scene.input.setDraggable(square);
 
-
         square.on('pointerdown', () => {
             this.scene.selectedShape = square;
         });

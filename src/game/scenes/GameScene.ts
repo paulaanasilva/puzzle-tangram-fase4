@@ -4,7 +4,6 @@ import CreateElements from './class/createElements';
 import ShapeActions from './class/shapeActions';
 
 export class GameScene extends Scene {
-
     updateElements: UpdateElements;
 	createElements: CreateElements;
 	shapeActions: ShapeActions;
@@ -54,6 +53,10 @@ export class GameScene extends Scene {
 
 		this.selectionOutline = this.add.graphics();
 
+        this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+            gameObject.x = dragX;
+            gameObject.y = dragY;
+        });
 		
 		this.input.on('pointerdown', (_, currentlyOver: Phaser.GameObjects.GameObject[]) => {
 			if (currentlyOver.length === 0) {
@@ -64,8 +67,7 @@ export class GameScene extends Scene {
 		this.input.on('pointermove', (pointer) => {
             this.shapeActions.mouseRotateSelectedShape(pointer);
         });
-		
-		
-	}
 
+
+	}
 }
