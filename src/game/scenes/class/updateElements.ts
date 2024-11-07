@@ -1,7 +1,7 @@
 
 export default class UpdateElements {
     updateSelectionOutline(selectedShape: Phaser.GameObjects.Image, selectionOutline: Phaser.GameObjects.Graphics) {
-        if (selectionOutline && selectedShape) {
+        /*if (selectionOutline && selectedShape) {
             selectionOutline.clear();
             selectionOutline.lineStyle(2, 0xff0000);
 
@@ -18,5 +18,6 @@ export default class UpdateElements {
         } else if (selectionOutline) {
             selectionOutline.clear();
         }
+            */
     }
 }

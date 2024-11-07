@@ -27,10 +27,22 @@ export class GameScene extends Scene {
 		this.load.image('sky', 'assets/sky.png')
 		this.load.image('triangulo', 'assets/triangulo.png')
 		this.load.image('retangulo', 'assets/retangulo.png')
+		this.load.image('girar', 'assets/girar.png')
 	}
 
 	create() {
 		this.add.image(400, 300, 'sky')
+
+		const roda = this.add.image(600, 400, 'girar').setScale(0.5)
+		roda.setInteractive()
+
+		this.input.on('pointermove', pointer => {
+			if (!pointer.isDown) {
+				const angle = Phaser.Math.Angle.Between(roda.x, roda.y, pointer.worldX, pointer.worldY);
+				roda.setRotation(angle);
+			}
+		});
+
 
 		this.triangle = this.createElements.createTriangle();
 		this.retangulo = this.createElements.createRetangulo();
