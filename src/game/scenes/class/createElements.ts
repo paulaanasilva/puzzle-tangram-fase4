@@ -1,4 +1,3 @@
-// src/game/scenes/class/createElements.ts
 import Phaser from 'phaser';
 import UpdateElements from './updateElements';
 
@@ -25,15 +24,48 @@ export default class CreateElements {
         return triangle;
     }
 
-    createSquare() {
-        const square = this.scene.add.rectangle(300, 400, 100, 200, 0xff69b4);
+    createOutlinedSquare() {
+        const graphics = this.scene.add.graphics();
+        graphics.lineStyle(4, 0xff69b4); // Define a cor e a espessura do contorno
+        graphics.strokeRect(300, 400, 200, 100); // Desenha o contorno do retângulo
+    
+        const rect = new Phaser.Geom.Rectangle(300, 400, 200, 100);
+        graphics.setInteractive(rect, Phaser.Geom.Rectangle.Contains);
+    
+        return { graphics, rect };
+    }
+    
+    createSquare(outlinedRect) {
+        const square = this.scene.add.rectangle(300, 400, 200, 100, 0xff69b4);
         square.setInteractive();
         this.scene.input.setDraggable(square);
-
+    
         square.on('pointerdown', () => {
             this.scene.selectedShape = square;
         });
-
+    
+        this.scene.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+            gameObject.x = dragX;
+            gameObject.y = dragY;
+        });
+    
+        this.scene.input.on('dragend', (pointer, gameObject) => {
+            const tolerance = 20; // Tolerância para o encaixe
+            const targetX = outlinedRect.x + outlinedRect.width / 2;
+            const targetY = outlinedRect.y + outlinedRect.height / 2;
+    
+            const distanceX = Math.abs(gameObject.x - targetX);
+            const distanceY = Math.abs(gameObject.y - targetY);
+    
+            if (distanceX < tolerance && distanceY < tolerance) {
+                console.log('Encaixou!');
+                gameObject.x = targetX;
+                gameObject.y = targetY;
+            } else {
+                console.log('Não encaixou.');
+            }
+        });
+    
         return square;
     }
 
