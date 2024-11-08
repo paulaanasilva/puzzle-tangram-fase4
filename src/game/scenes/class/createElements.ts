@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import UpdateElements from './updateElements';
+import fitShape from './fitShape';
 
 
 export default class CreateElements {
@@ -35,7 +36,7 @@ export default class CreateElements {
         return { graphics, rect };
     }
     
-    createSquare(outlinedRect) {
+    createSquare(outlinedRect: { x: number, y: number, width: number, height: number }) {
         const square = this.scene.add.rectangle(300, 400, 200, 100, 0xff69b4);
         square.setInteractive();
         this.scene.input.setDraggable(square);
@@ -43,29 +44,10 @@ export default class CreateElements {
         square.on('pointerdown', () => {
             this.scene.selectedShape = square;
         });
-    
-        this.scene.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-            gameObject.x = dragX;
-            gameObject.y = dragY;
-        });
-    
-        this.scene.input.on('dragend', (pointer, gameObject) => {
-            const tolerance = 20; // Tolerância para o encaixe
-            const targetX = outlinedRect.x + outlinedRect.width / 2;
-            const targetY = outlinedRect.y + outlinedRect.height / 2;
-    
-            const distanceX = Math.abs(gameObject.x - targetX);
-            const distanceY = Math.abs(gameObject.y - targetY);
-    
-            if (distanceX < tolerance && distanceY < tolerance) {
-                console.log('Encaixou!');
-                gameObject.x = targetX;
-                gameObject.y = targetY;
-            } else {
-                console.log('Não encaixou.');
-            }
-        });
-    
+
+        const fitObject = new fitShape(this.scene);
+        fitObject.enableFit(square, outlinedRect);
+        
         return square;
     }
 

@@ -37,12 +37,6 @@ export class GameScene extends Scene {
 	create() {
 		this.add.image(400, 300, 'sky')
 
-		//this.triangle = this.createElements.createTriangle();
-		//this.retangulo = this.createElements.createRetangulo();
-		this.trianglePhaser = this.createElements.createTrianglePhaser();
-		//this.square = this.createElements.createSquare();
-		//this.outlinedSquare = this.createElements.createOutlinedSquare();
-
 		const outlinedSquare = this.createElements.createOutlinedSquare();
 		this.square = this.createElements.createSquare(outlinedSquare.rect);
 
