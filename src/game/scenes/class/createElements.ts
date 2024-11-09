@@ -48,6 +48,7 @@ export default class CreateElements {
         const fitObject = new fitShape(this.scene);
         fitObject.enableFit(square, outlinedRect);
         
+
         return square;
     }
 
