@@ -3,8 +3,8 @@ import { Game } from 'phaser';
 
 const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
-	width: 800,
-	height: 600,
+    width: window.innerWidth,
+    height: window.innerHeight,
 	physics: {
 		default: 'arcade',
 		arcade: {
@@ -17,9 +17,13 @@ const config: Phaser.Types.Core.GameConfig = {
 };
 
 const StartGame = (parent: string) => {
+    const game = new Game({ ...config, parent });
 
-    return new Game({ ...config, parent });
+    window.addEventListener('resize', () => {
+        game.scale.resize(window.innerWidth, window.innerHeight);
+    });
 
+    return game;
 }
 
 export default StartGame;

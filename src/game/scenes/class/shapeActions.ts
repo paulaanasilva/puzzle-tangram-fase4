@@ -1,4 +1,3 @@
-// src/game/scenes/class/ShapeActions.ts
 import Phaser from 'phaser';
 import UpdateElements from './updateElements';
 
