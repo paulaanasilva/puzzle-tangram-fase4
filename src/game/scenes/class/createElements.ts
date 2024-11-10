@@ -13,6 +13,44 @@ export default class CreateElements {
         this.updateElements = updateElements;
     }
 
+    createOutlinedSquare() {
+        const graphics = this.scene.add.graphics();
+        graphics.lineStyle(4, 0xff69b4); // Define a cor e a espessura do contorno
+        graphics.strokeRect(300, 400, 200, 100); // Desenha o contorno do retângulo
+
+        const rect = new Phaser.Geom.Rectangle(300, 400, 200, 100);
+        graphics.setInteractive(rect, Phaser.Geom.Rectangle.Contains);
+
+        return { graphics, rect };
+    }
+
+    createSquare(outlinedRect: { x: number, y: number, width: number, height: number }) {
+        const square = this.scene.add.rectangle(300, 400, 200, 100, 0xff69b4);
+        square.setInteractive();
+        this.scene.input.setDraggable(square);
+
+        square.on('pointerdown', () => {
+            this.scene.selectedShape = square;
+        });
+
+        const fitObject = new fitShape(this.scene);
+        fitObject.enableFit(square, outlinedRect);
+
+
+        return square;
+    }
+
+    createButton(x: number, y: number, callback: () => void) {
+        const button = this.scene.add.image(x, y, 'GirarObjeto');
+        button.setScale(0.1);
+        button.setInteractive();
+
+        button.on('pointerdown', callback);
+
+        return button;
+    }
+
+    /*
     createTrianglePhaser() {
         const triangle = this.scene.add.triangle(200, 100, 0, 0, 100, 0, 50, 100, 0xff69b4);
         triangle.setInteractive();
@@ -23,33 +61,6 @@ export default class CreateElements {
         });
 
         return triangle;
-    }
-
-    createOutlinedSquare() {
-        const graphics = this.scene.add.graphics();
-        graphics.lineStyle(4, 0xff69b4); // Define a cor e a espessura do contorno
-        graphics.strokeRect(300, 400, 200, 100); // Desenha o contorno do retângulo
-    
-        const rect = new Phaser.Geom.Rectangle(300, 400, 200, 100);
-        graphics.setInteractive(rect, Phaser.Geom.Rectangle.Contains);
-    
-        return { graphics, rect };
-    }
-    
-    createSquare(outlinedRect: { x: number, y: number, width: number, height: number }) {
-        const square = this.scene.add.rectangle(300, 400, 200, 100, 0xff69b4);
-        square.setInteractive();
-        this.scene.input.setDraggable(square);
-    
-        square.on('pointerdown', () => {
-            this.scene.selectedShape = square;
-        });
-
-        const fitObject = new fitShape(this.scene);
-        fitObject.enableFit(square, outlinedRect);
-        
-
-        return square;
     }
 
     createTriangle() {
@@ -78,26 +89,6 @@ export default class CreateElements {
         return retangulo;
     }
 
-    createButton(x: number, y: number, text: string, callback: () => void) {
-        const button = this.scene.add.text(x, y, text, {
-            fontSize: '32px',
-            fill: '#fff',
-            backgroundColor: '#000',
-            padding: { x: 10, y: 5 },
-        }).setInteractive();
 
-        button.on('pointerdown', callback);
-
-        button.on('pointerover', () => {
-            button.setStyle({ fill: '#ff0' });
-        });
-
-        button.on('pointerout', () => {
-            button.setStyle({ fill: '#fff' });
-        });
-
-        return button;
-    }
-
-
+    */
 }
