@@ -16,6 +16,7 @@ export class GameScene extends Scene {
 	trianglePhaser: Phaser.GameObjects.Triangle;
 	square: Phaser.GameObjects.Rectangle;
 	outlinedSquare: Phaser.GameObjects.Rectangle;
+	outlinedSquare2: Phaser.GameObjects.Rectangle;
 	triangle: Phaser.GameObjects.Image;
 	retangulo: Phaser.GameObjects.Image;
 	botaoGirar: Phaser.GameObjects.Image;
@@ -42,8 +43,13 @@ export class GameScene extends Scene {
 	create() {
 		this.background.createBackground();
 
-		const outlinedSquare = this.createElements.createOutlinedSquare();
-		this.square = this.createElements.createSquare(outlinedSquare.rect);
+        this.outlinedSquare = this.createElements.createOutlinedSquare();
+        this.outlinedSquare2 = this.createElements.createOutlinedSquare2();
+
+        this.square = this.createElements.createSquare([this.outlinedSquare.rect, this.outlinedSquare2.rect]);
+		this.square = this.createElements.createSquare([this.outlinedSquare.rect, this.outlinedSquare2.rect]);
+
+
 
 		const buttonX = this.scale.width * 0.9; // 100 pixels da borda direita
 		const buttonY = this.scale.height * 0.9; // 100 pixels da borda inferior

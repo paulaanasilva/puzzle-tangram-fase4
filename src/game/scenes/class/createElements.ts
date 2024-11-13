@@ -24,7 +24,18 @@ export default class CreateElements {
         return { graphics, rect };
     }
 
-    createSquare(outlinedRect: { x: number, y: number, width: number, height: number }) {
+    createOutlinedSquare2() {
+        const graphics = this.scene.add.graphics();
+        graphics.lineStyle(4, 0xff69b4); // Define a cor e a espessura do contorno
+        graphics.strokeRect(150, 200, 300, 200); // Desenha o contorno do retângulo
+
+        const rect = new Phaser.Geom.Rectangle(150, 200, 300, 200);
+        graphics.setInteractive(rect, Phaser.Geom.Rectangle.Contains);
+
+        return { graphics, rect };
+    }
+
+    createSquare(outlinedRects: Phaser.Geom.Rectangle[]) {
         const square = this.scene.add.rectangle(300, 400, 200, 100, 0xff69b4);
         square.setInteractive();
         this.scene.input.setDraggable(square);
@@ -34,8 +45,7 @@ export default class CreateElements {
         });
 
         const fitObject = new fitShape(this.scene);
-        fitObject.enableFit(square, outlinedRect);
-
+        fitObject.enablePartialFit(square, outlinedRects);
 
         return square;
     }
