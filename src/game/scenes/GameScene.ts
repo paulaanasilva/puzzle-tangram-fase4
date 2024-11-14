@@ -13,14 +13,11 @@ export class GameScene extends Scene {
 	shapeActions: ShapeActions;
 	inputHandler: InputHandler;
 	background: Background;
-	trianglePhaser: Phaser.GameObjects.Triangle;
 	square: Phaser.GameObjects.Rectangle;
+	outlineTriangle: Phaser.GameObjects.Triangle;
 	outlinedSquare: Phaser.GameObjects.Rectangle;
 	outlinedSquare2: Phaser.GameObjects.Rectangle;
-	triangle: Phaser.GameObjects.Image;
-	retangulo: Phaser.GameObjects.Image;
 	botaoGirar: Phaser.GameObjects.Image;
-	selectedShape: Phaser.GameObjects.Image;
 	selectionOutline: Phaser.GameObjects.Graphics;
 
 	constructor() {
@@ -33,10 +30,7 @@ export class GameScene extends Scene {
 	}
 
 	preload() {
-		this.load.image('sky', 'assets/sky.png')
-		this.load.image('triangulo', 'assets/triangulo.png')
-		this.load.image('retangulo', 'assets/retangulo.png')
-		this.load.image('mosaic', 'assets/mosaic.jpg')
+		this.load.image('mosaic', 'assets/mosaic.jpg');
 		this.load.image('GirarObjeto', 'assets/GirarObjetos.png');
 	}
 
@@ -45,11 +39,13 @@ export class GameScene extends Scene {
 
         this.outlinedSquare = this.createElements.createOutlinedSquare();
         this.outlinedSquare2 = this.createElements.createOutlinedSquare2();
+		this.outlineTriangle = this.createElements.createOutlinedTriangle();
 
         this.square = this.createElements.createSquare([this.outlinedSquare.rect, this.outlinedSquare2.rect]);
 		this.square = this.createElements.createSquare([this.outlinedSquare.rect, this.outlinedSquare2.rect]);
 
 
+		//
 
 		const buttonX = this.scale.width * 0.9; // 100 pixels da borda direita
 		const buttonY = this.scale.height * 0.9; // 100 pixels da borda inferior
@@ -58,12 +54,23 @@ export class GameScene extends Scene {
 			this.shapeActions.rotateSelectedShape();
 		});
 
+		//
+
 		this.selectionOutline = this.add.graphics();
 
 		this.inputHandler.setupInputHandlers();
 
 		// Adicione um listener para redimensionamento da tela
 		this.scale.on('resize', this.resize, this);
+
+
+		// Create dots every 100px in X and Y
+		for (let x = 0; x < this.scale.width; x += 100) {
+			for (let y = 0; y < this.scale.height; y += 100) {
+				const dot = this.add.circle(x, y, 5, 0x000000);
+				dot.setScrollFactor(0);
+			}
+		}
 	}
 
 	resize(gameSize: Phaser.Structs.Size) {

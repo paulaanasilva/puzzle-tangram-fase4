@@ -35,6 +35,26 @@ export default class CreateElements {
         return { graphics, rect };
     }
 
+    createOutlinedTriangle() {
+        const graphics = this.scene.add.graphics();
+        graphics.lineStyle(4, 0xff0000); // Define a cor e a espessura do contorno
+    
+        // Coordenadas dos vértices do triângulo
+        //As coordenadas x aumentam para a direita e as coordenadas y aumentam para baixo
+        const x1 = 200, y1 = 300;
+        const x2 = 400, y2 = 300;
+        const x3 = 300, y3 = 100;
+    
+        // Desenha o contorno do triângulo
+        graphics.strokeTriangle(x1, y1, x2, y2, x3, y3);
+    
+        // Cria um objeto de triângulo geométrico para interatividade
+        const triangle = new Phaser.Geom.Triangle(x1, y1, x2, y2, x3, y3);
+        graphics.setInteractive(triangle, Phaser.Geom.Triangle.Contains);
+    
+        return { graphics, triangle };
+    }
+
     createSquare(outlinedRects: Phaser.Geom.Rectangle[]) {
         const square = this.scene.add.rectangle(300, 400, 200, 100, 0xff69b4);
         square.setInteractive();
