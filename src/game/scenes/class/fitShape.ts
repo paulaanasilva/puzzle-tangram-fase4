@@ -7,30 +7,7 @@ export default class fitShape {
         this.scene = scene;
     }
 
-    fit(gameObject, targetRect) {
-        const tolerance = 20; //20 px de tolerância
-        const targetX = targetRect.x + targetRect.width / 2;
-        const targetY = targetRect.y + targetRect.height / 2;
-
-        const distanceX = Math.abs(gameObject.x - targetX);
-        const distanceY = Math.abs(gameObject.y - targetY);
-
-        if (distanceX < tolerance && distanceY < tolerance) {
-            console.log('Encaixou!');
-            gameObject.x = targetX;
-            gameObject.y = targetY;
-        } else {
-            console.log('Não encaixou.');
-        }
-
-    }
-
-    enableFit(gameObject, targetRect) {
-        this.scene.input.on('dragend', () => {
-            this.fit(gameObject, targetRect);
-        });
-    }
-
+    /*
     enablePartialFit(square: Phaser.GameObjects.Rectangle, outlinedRects: Phaser.Geom.Rectangle[]) {
         const tolerance = 20; // 20 px de tolerância
 
@@ -64,9 +41,33 @@ export default class fitShape {
             });
 
             if (!isFitted) {
-                console.log('Não encaixou.');
+                console.log('Não encaixou o Quadrado.');
             } else {
-                console.log('Encaixou!');
+                console.log('Encaixou o Quadrado!');
+            }
+        });
+    }
+    */
+    enablePartialFit(shape: Phaser.GameObjects.GameObject, outlinedRect: Phaser.Geom.Rectangle) {
+        const tolerance = 20; // 20 px de tolerância
+        const gridSize = 50; // Tamanho da grade de 40 px
+
+        this.scene.input.on('dragend', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject) => {
+            const shapeBounds = gameObject.getBounds();
+            const outlinedBounds = outlinedRect;
+
+            const fitsLeft = Math.abs(shapeBounds.left - outlinedBounds.left) <= tolerance;
+            const fitsRight = Math.abs(shapeBounds.right - outlinedBounds.right) <= tolerance;
+            const fitsTop = Math.abs(shapeBounds.top - outlinedBounds.top) <= tolerance;
+            const fitsBottom = Math.abs(shapeBounds.bottom - outlinedBounds.bottom) <= tolerance;
+
+            if (fitsLeft || fitsRight || fitsTop || fitsBottom) {
+                const newX = Math.round(gameObject.x / gridSize) * gridSize;
+                const newY = Math.round(gameObject.y / gridSize) * gridSize;
+                gameObject.setPosition(newX, newY);
+                console.log('Encaixou o objeto!');
+            } else {
+                console.log('Não encaixou o objeto.');
             }
         });
     }

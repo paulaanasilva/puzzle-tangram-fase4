@@ -14,9 +14,11 @@ export class GameScene extends Scene {
 	inputHandler: InputHandler;
 	background: Background;
 	square: Phaser.GameObjects.Rectangle;
+	triangle: Phaser.GameObjects.Triangle;
 	outlineTriangle: Phaser.GameObjects.Triangle;
 	outlinedSquare: Phaser.GameObjects.Rectangle;
 	outlinedSquare2: Phaser.GameObjects.Rectangle;
+	defaultOutlinedSquare: Phaser.GameObjects.Rectangle;
 	botaoGirar: Phaser.GameObjects.Image;
 	selectionOutline: Phaser.GameObjects.Graphics;
 
@@ -37,6 +39,24 @@ export class GameScene extends Scene {
 	create() {
 		this.background.createBackground();
 
+		//Criou o quadrado principal
+		this.defaultOutlinedSquare = this.createElements.createDefaultOutlinedSquare();
+
+		//criou a peça quadrado
+		this.outlinedSquare = this.createElements.createOutlinedSquare();
+		//criou a peça triangulo
+		this.outlineTriangle = this.createElements.createOutlinedTriangle();
+
+        this.createElements.createTriangle(this.defaultOutlinedSquare.rect);
+        this.createElements.createSquare(this.defaultOutlinedSquare.rect);
+
+
+		/////////////////////////////////////////
+		//this.triangle = this.createElements.createTriangle(this.outlineTriangle.triangle);
+
+		//this.createElements.createTrianglePhaser();
+
+		/*
         this.outlinedSquare = this.createElements.createOutlinedSquare();
         this.outlinedSquare2 = this.createElements.createOutlinedSquare2();
 		this.outlineTriangle = this.createElements.createOutlinedTriangle();
@@ -45,19 +65,17 @@ export class GameScene extends Scene {
 		this.square = this.createElements.createSquare([this.outlinedSquare.rect, this.outlinedSquare2.rect]);
 
 
-		//
-
 		const buttonX = this.scale.width * 0.9; // 100 pixels da borda direita
 		const buttonY = this.scale.height * 0.9; // 100 pixels da borda inferior
 
 		this.botaoGirar = this.createElements.createButton(1300, 500, () => {
 			this.shapeActions.rotateSelectedShape();
 		});
-
-		//
+		*/
 
 		this.selectionOutline = this.add.graphics();
 
+		
 		this.inputHandler.setupInputHandlers();
 
 		// Adicione um listener para redimensionamento da tela
@@ -65,12 +83,13 @@ export class GameScene extends Scene {
 
 
 		// Create dots every 100px in X and Y
-		for (let x = 0; x < this.scale.width; x += 100) {
-			for (let y = 0; y < this.scale.height; y += 100) {
-				const dot = this.add.circle(x, y, 5, 0x000000);
+		for (let x = 0; x < this.scale.width; x += 50) {
+			for (let y = 0; y < this.scale.height; y += 50) {
+				const dot = this.add.circle(x, y, 2, 0x000000);
 				dot.setScrollFactor(0);
 			}
 		}
+
 	}
 
 	resize(gameSize: Phaser.Structs.Size) {
