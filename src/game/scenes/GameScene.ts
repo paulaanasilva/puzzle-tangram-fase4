@@ -43,9 +43,9 @@ export class GameScene extends Scene {
 		this.defaultOutlinedSquare = this.createElements.createDefaultOutlinedSquare();
 
 		//criou a peça quadrado
-		this.outlinedSquare = this.createElements.createOutlinedSquare();
+		//this.outlinedSquare = this.createElements.createOutlinedSquare();
 		//criou a peça triangulo
-		this.outlineTriangle = this.createElements.createOutlinedTriangle();
+		//this.outlineTriangle = this.createElements.createOutlinedTriangle();
 
         this.createElements.createTriangle(this.defaultOutlinedSquare.rect);
         this.createElements.createSquare(this.defaultOutlinedSquare.rect);
