@@ -1,15 +1,11 @@
 import Phaser from 'phaser';
-import UpdateElements from './updateElements';
-
 export default class ShapeActions {
     private scene: Phaser.Scene;
-    private updateElements: UpdateElements;
     private rotationSpeed: number = 0.01; // Velocidade de rotação
 
 
-    constructor(scene: Phaser.Scene, updateElements: UpdateElements) {
+    constructor(scene: Phaser.Scene) {
         this.scene = scene;
-        this.updateElements = updateElements;
     }
 
     deselectShape() {
@@ -22,7 +18,6 @@ export default class ShapeActions {
     rotateSelectedShape() {
         if (this.scene.selectedShape) {
             this.scene.selectedShape.rotation += Phaser.Math.DegToRad(90);
-            this.updateElements.updateSelectionOutline(this.scene.selectedShape, this.scene.selectionOutline);
         }
     }
 
