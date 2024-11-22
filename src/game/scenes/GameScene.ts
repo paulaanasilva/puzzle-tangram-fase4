@@ -49,6 +49,9 @@ export class GameScene extends Scene {
 
         this.createElements.createTriangle(this.defaultOutlinedSquare.rect);
         this.createElements.createSquare(this.defaultOutlinedSquare.rect);
+		this.createElements.createTrapezoid(this.defaultOutlinedSquare.rect);
+
+		
 
 
 		/////////////////////////////////////////
@@ -72,6 +75,13 @@ export class GameScene extends Scene {
 			this.shapeActions.rotateSelectedShape();
 		});
 		*/
+
+		const buttonX = this.scale.width * 0.9; // 100 pixels da borda direita
+		const buttonY = this.scale.height * 0.9; // 100 pixels da borda inferior
+
+		this.botaoGirar = this.createElements.createButton(1300, 500, () => {
+			this.shapeActions.rotateSelectedShape();
+		});
 
 		this.selectionOutline = this.add.graphics();
 

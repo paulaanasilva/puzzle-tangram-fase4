@@ -73,7 +73,7 @@ export default class CreateElements {
 
         return square;
     }
-
+    
     createTriangle(outlinedRect: Phaser.Geom.Rectangle) {
         const triangle = this.scene.add.triangle(900, 100, 100, 100, 300, 300, 300, 100, 0xff69b4);
         const hitArea = new Phaser.Geom.Triangle(100, 100, 300, 300, 300, 100);
@@ -90,6 +90,31 @@ export default class CreateElements {
 
         return triangle;
     }
+
+    createTrapezoid(outlinedRect: Phaser.Geom.Rectangle) {
+        const points = [
+            { x: 0, y: -100 },   // Ponto superior esquerdo
+            { x: 200, y: -100 }, // Ponto superior direito
+            { x: 0, y: 100 },    // Ponto inferior direito
+            { x: -200, y: 100 }  // Ponto inferior esquerdo
+        ];
+        const trapezoid = this.scene.add.polygon(1000, 500, points, 0xff69b4);
+        //trapezoid.setPosition(900, 500);
+
+        const hitArea = new Phaser.Geom.Polygon(points);
+        trapezoid.setInteractive(hitArea, Phaser.Geom.Polygon.Contains);
+        this.scene.input.setDraggable(trapezoid);
+
+        trapezoid.on('pointerdown', () => {
+            this.scene.selectedShape = trapezoid;
+        });
+
+        this.fitObject.enablePartialFit(trapezoid, outlinedRect);
+
+        return trapezoid;
+    }
+
+
 
     /*
     createTrianglePhaser() {
