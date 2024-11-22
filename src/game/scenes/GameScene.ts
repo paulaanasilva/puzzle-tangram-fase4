@@ -1,5 +1,4 @@
 import { Scene } from 'phaser';
-import UpdateElements from './class/updateElements';
 import CreateElements from './class/createElements';
 import ShapeActions from './class/shapeActions';
 import InputHandler from './class/inputHandler';
@@ -8,25 +7,18 @@ import Background from './class/background';
 
 
 export class GameScene extends Scene {
-	updateElements: UpdateElements;
 	createElements: CreateElements;
 	shapeActions: ShapeActions;
 	inputHandler: InputHandler;
 	background: Background;
-	square: Phaser.GameObjects.Rectangle;
-	triangle: Phaser.GameObjects.Triangle;
-	outlineTriangle: Phaser.GameObjects.Triangle;
-	outlinedSquare: Phaser.GameObjects.Rectangle;
-	outlinedSquare2: Phaser.GameObjects.Rectangle;
 	defaultOutlinedSquare: Phaser.GameObjects.Rectangle;
 	botaoGirar: Phaser.GameObjects.Image;
 	selectionOutline: Phaser.GameObjects.Graphics;
 
 	constructor() {
 		super('GameScene');
-		this.updateElements = new UpdateElements();
-		this.createElements = new CreateElements(this, this.updateElements);
-		this.shapeActions = new ShapeActions(this, this.updateElements);
+		this.createElements = new CreateElements(this);
+		this.shapeActions = new ShapeActions(this);
 		this.inputHandler = new InputHandler(this, this.shapeActions);
 		this.background = new Background(this);
 	}
@@ -39,42 +31,12 @@ export class GameScene extends Scene {
 	create() {
 		this.background.createBackground();
 
-		//Criou o quadrado principal
+		//Criou o quadrado destino
 		this.defaultOutlinedSquare = this.createElements.createDefaultOutlinedSquare();
-
-		//criou a peça quadrado
-		//this.outlinedSquare = this.createElements.createOutlinedSquare();
-		//criou a peça triangulo
-		//this.outlineTriangle = this.createElements.createOutlinedTriangle();
 
         this.createElements.createTriangle(this.defaultOutlinedSquare.rect);
         this.createElements.createSquare(this.defaultOutlinedSquare.rect);
 		this.createElements.createTrapezoid(this.defaultOutlinedSquare.rect);
-
-		
-
-
-		/////////////////////////////////////////
-		//this.triangle = this.createElements.createTriangle(this.outlineTriangle.triangle);
-
-		//this.createElements.createTrianglePhaser();
-
-		/*
-        this.outlinedSquare = this.createElements.createOutlinedSquare();
-        this.outlinedSquare2 = this.createElements.createOutlinedSquare2();
-		this.outlineTriangle = this.createElements.createOutlinedTriangle();
-
-        this.square = this.createElements.createSquare([this.outlinedSquare.rect, this.outlinedSquare2.rect]);
-		this.square = this.createElements.createSquare([this.outlinedSquare.rect, this.outlinedSquare2.rect]);
-
-
-		const buttonX = this.scale.width * 0.9; // 100 pixels da borda direita
-		const buttonY = this.scale.height * 0.9; // 100 pixels da borda inferior
-
-		this.botaoGirar = this.createElements.createButton(1300, 500, () => {
-			this.shapeActions.rotateSelectedShape();
-		});
-		*/
 
 		const buttonX = this.scale.width * 0.9; // 100 pixels da borda direita
 		const buttonY = this.scale.height * 0.9; // 100 pixels da borda inferior
@@ -90,7 +52,6 @@ export class GameScene extends Scene {
 
 		// Adicione um listener para redimensionamento da tela
 		this.scale.on('resize', this.resize, this);
-
 
 		// Create dots every 100px in X and Y
 		for (let x = 0; x < this.scale.width; x += 50) {
