@@ -2,42 +2,27 @@ import { Scene } from 'phaser';
 import CreateElements from './class/createElements';
 import ShapeActions from './class/shapeActions';
 import InputHandler from './class/inputHandler';
-import Background from './class/background';
-import createButton from './class/createButton';
-import createTargetElements from './class/createTargetElements';
+import CreateTargetElements from './class/createTargetElements';
+import { BaseScene } from './BaseScene';
 
-
-
-export class GameScene extends Scene {
+export class GameScene extends BaseScene {
 	createButton: createButton;
 	createElements: CreateElements;
+	createTargetElements: CreateTargetElements;
 	shapeActions: ShapeActions;
 	inputHandler: InputHandler;
-	background: Background;
 	defaultOutlinedSquare: Phaser.GameObjects.Rectangle;
-	botaoGirar: Phaser.GameObjects.Image;
-	selectionOutline: Phaser.GameObjects.Graphics;
-	createTargetElements: createTargetElements;
 
 	constructor() {
 		super('GameScene');
 		this.createElements = new CreateElements(this);
-		this.createTargetElements = new createTargetElements(this);
-		this.createButton = new createButton(this);
+		this.createTargetElements = new CreateTargetElements(this);
 		this.shapeActions = new ShapeActions(this);
 		this.inputHandler = new InputHandler(this, this.shapeActions);
-		this.background = new Background(this);
-	}
-
-	preload() {
-		this.load.image('mosaic', 'assets/mosaic.jpg');
-		this.load.image('GirarObjeto', 'assets/GirarObjetos.png');
-		this.load.image('giraEsquerda', 'assets/giro10grausEsquerda.png');
-		this.load.image('giraDireita', 'assets/giro10grausDireita.png');
 	}
 
 	create() {
-		this.background.createBackground();
+		super.create();
 
 		//Criou o quadrado destino
 		this.defaultOutlinedSquare = this.createTargetElements.createDefaultOutlinedSquare();
@@ -46,21 +31,12 @@ export class GameScene extends Scene {
         this.createElements.createSquare(this.defaultOutlinedSquare.rect);
 		this.createElements.createTrapezoid(this.defaultOutlinedSquare.rect);
 
-		// Botão para girar objetos
-		this.botaoGirar = this.createButton.createButtonRight(1400, 600, () => {
-			this.shapeActions.rotateSelectedShapeRight();
-		});
-
-		this.botaoGirar = this.createButton.createButtonLeft(1250, 600, () => {
-			this.shapeActions.rotateSelectedShapeLeft();
-		});
-
-		this.selectionOutline = this.add.graphics();
-
-		
 		// Essa linha que permite fazer a movimentação dos objetos
 		this.inputHandler.setupInputHandlers();
 
+
+		//this.selectionOutline = this.add.graphics();
+		
 		// Adicione um listener para redimensionamento da tela
 		//this.scale.on('resize', this.resize, this);
 
