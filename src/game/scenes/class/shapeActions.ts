@@ -15,9 +15,15 @@ export default class ShapeActions {
         }
     }
 
-    rotateSelectedShape() {
+    rotateSelectedShapeRight() {
         if (this.scene.selectedShape) {
-            this.scene.selectedShape.rotation += Phaser.Math.DegToRad(90);
+            this.scene.selectedShape.rotation -= Phaser.Math.DegToRad(10);
+        }
+    }
+
+    rotateSelectedShapeLeft() {
+        if (this.scene.selectedShape) {
+            this.scene.selectedShape.rotation += Phaser.Math.DegToRad(10);
         }
     }
 

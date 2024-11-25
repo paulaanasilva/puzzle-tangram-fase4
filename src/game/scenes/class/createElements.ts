@@ -22,6 +22,7 @@ export default class CreateElements {
         return { graphics, rect };
     }
 
+    /*
     createOutlinedSquare() {
         const graphics = this.scene.add.graphics();
         graphics.lineStyle(4, 0x000000); // Define a cor e a espessura do contorno
@@ -32,7 +33,8 @@ export default class CreateElements {
 
         return { graphics, rect };
     }
-
+    */
+   
     createOutlinedTriangle() {
         const graphics = this.scene.add.graphics();
         graphics.lineStyle(4, 0x000000); // Define a cor e a espessura do contorno
@@ -81,7 +83,6 @@ export default class CreateElements {
 
         this.fitObject.enablePartialFit(triangle, outlinedRect);
 
-
         return triangle;
     }
 
@@ -106,14 +107,4 @@ export default class CreateElements {
         return trapezoid;
     }
 
-
-    createButton(x: number, y: number, callback: () => void) {
-        const button = this.scene.add.image(x, y, 'GirarObjeto');
-        button.setScale(0.1);
-        button.setInteractive();
-
-        button.on('pointerdown', callback);
-
-        return button;
-    }
 }
