@@ -6,7 +6,6 @@ import CreateTargetElements from './class/createTargetElements';
 import { BaseScene } from './BaseScene';
 
 export class GameScene extends BaseScene {
-	createButton: createButton;
 	createElements: CreateElements;
 	createTargetElements: CreateTargetElements;
 	shapeActions: ShapeActions;

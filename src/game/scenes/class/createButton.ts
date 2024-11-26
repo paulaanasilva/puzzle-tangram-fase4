@@ -10,7 +10,6 @@ export default class createButton {
 
     createButtonRight(x: number, y: number, callback: () => void) {
         const button = this.scene.add.image(x, y, 'giraDireita');
-        //button.setScale(0.1);
         button.setInteractive();
 
         button.on('pointerdown', callback);
@@ -20,7 +19,24 @@ export default class createButton {
 
     createButtonLeft(x: number, y: number, callback: () => void) {
         const button = this.scene.add.image(x, y, 'giraEsquerda');
-        //button.setScale(0.1);
+        button.setInteractive();
+
+        button.on('pointerdown', callback);
+
+        return button;
+    }
+
+    createButtonNext(x: number, y: number, callback: () => void) {
+        const button = this.scene.add.image(x, y, 'next-button');
+        button.setInteractive();
+
+        button.on('pointerdown', callback);
+
+        return button;
+    }
+
+    createButtonPlay(x: number, y: number, callback: () => void) {
+        const button = this.scene.add.image(x, y, 'play-button');
         button.setInteractive();
 
         button.on('pointerdown', callback);

@@ -1,4 +1,6 @@
 import { GameScene } from './scenes/GameScene';
+import { Level1 } from './scenes/class/levels/Level1';
+import { Level2 } from './scenes/class/levels/Level2';
 import { Game } from 'phaser';
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -12,7 +14,8 @@ const config: Phaser.Types.Core.GameConfig = {
 		}
 	},
     scene: [
-        GameScene
+        Level1,
+        Level2,
     ]
 };
 

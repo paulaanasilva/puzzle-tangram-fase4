@@ -3,14 +3,15 @@ import { Scene } from 'phaser';
 import Background from './class/background';
 import createButton from './class/createButton';
 
-//Essa é uma classe base que contém coisas que são comuns a todas as cenas
 export class BaseScene extends Scene {
     background: Background;
     createButton: createButton;
     botaoGirar: Phaser.GameObjects.Image;
+    nextButton: Phaser.GameObjects.Image;
+    playButton: Phaser.GameObjects.Image;
 
-    constructor() {
-        super('BaseScene');
+    constructor(key: string) {
+        super(key);
         this.background = new Background(this);
         this.createButton = new createButton(this);
     }
@@ -20,6 +21,8 @@ export class BaseScene extends Scene {
         this.load.image('GirarObjeto', 'assets/GirarObjetos.png');
         this.load.image('giraEsquerda', 'assets/giro10grausEsquerda.png');
         this.load.image('giraDireita', 'assets/giro10grausDireita.png');
+        this.load.image('next-button', 'assets/next.png');
+        this.load.image('play-button', 'assets/play.png');
     }
 
     create() {
@@ -33,6 +36,13 @@ export class BaseScene extends Scene {
         this.botaoGirar = this.createButton.createButtonLeft(1250, 600, () => {
             this.shapeActions.rotateSelectedShapeLeft();
         });
-    }
+        
+        this.nextButton = this.createButton.createButtonNext(1100, 600, () => {
+            this.scene.start('Level2');
+        });
 
-}   
+        this.playButton = this.createButton.createButtonPlay(950, 600, () => {
+            console.log('play');
+        });
+    }
+}
