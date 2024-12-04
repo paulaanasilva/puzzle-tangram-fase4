@@ -22,9 +22,6 @@ export class Level2 extends BaseScene {
 
     create() {
         super.create();
-        this.defaultOutlinedSquare = this.createTargetElements.createDefaultOutlinedSquare();
-
-        this.createElements.createTrapezoid(this.defaultOutlinedSquare.rect);
 
         this.inputHandler.setupInputHandlers();
     }
