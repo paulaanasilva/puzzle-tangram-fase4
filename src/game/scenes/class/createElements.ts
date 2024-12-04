@@ -5,10 +5,12 @@ import fitShape from './fitShape';
 export default class CreateElements {
     private scene: Phaser.Scene;
     private fitObject: fitShape;
+    private shapes: Phaser.GameObjects.Polygon[];
 
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
         this.fitObject = new fitShape(scene);
+        this.shapes = [];
     }
 
     createSquare2(outlinedRect: Phaser.Geom.Rectangle) {
@@ -34,6 +36,8 @@ export default class CreateElements {
         });
 
         this.fitObject.enablePartialFit(square, outlinedRect);
+
+        //this.shapes.push(square);
 
         return square;
     }
@@ -62,6 +66,24 @@ export default class CreateElements {
 
         this.fitObject.enablePartialFit(square, outlinedRect);
 
+        this.shapes.push(square);
+
+        /*
+        square.on('dragend', () => {
+            const destinationPoints = [
+                { x: 500, y: 100 },
+                { x: 600, y: 200 },
+                { x: 600, y: 500 },
+                { x: 500, y: 500 }
+            ];
+            if (this.isShapeInCorrectPosition(square, destinationPoints)) {
+                console.log('Forma está na posição correta!');
+            } else {
+                console.log('Forma não está na posição correta.');
+            }
+        });
+        */
+
         return square;
     }
 
@@ -89,10 +111,12 @@ export default class CreateElements {
 
         this.fitObject.enablePartialFit(triangle, outlinedRect);
 
+        //this.shapes.push(triangle);
+
         return triangle;
     }
 
-    
+
     createTriangle2(outlinedRect: Phaser.Geom.Rectangle) {
         const points = [
             { x: 0, y: 0 },
@@ -117,8 +141,50 @@ export default class CreateElements {
 
         this.fitObject.enablePartialFit(triangle, outlinedRect);
 
+        //this.shapes.push(triangle);
+
         return triangle;
     }
 
+    validateAllShapes(): boolean {
+        const destinationPoints = [
+            { x: 500, y: 100 },
+            { x: 600, y: 200 },
+            { x: 600, y: 500 },
+            { x: 500, y: 500 }
+        ];
+
+        for (const shape of this.shapes) {
+            if (!this.isShapeInCorrectPosition(shape, destinationPoints)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    isShapeInCorrectPosition(shape: Phaser.GameObjects.Polygon, destinationPoints: { x: number, y: number }[]): boolean {
+        const shapePoints = shape.geom.points;
+        const tolerance = 10; // Tolerância de 10 pixels
+        console.log("Validando forma...");
+        console.log(shapePoints);
+
+        for (let i = 0; i < shapePoints.length; i++) {
+            const shapePoint = shapePoints[i];
+            const destinationPoint = destinationPoints[i];
+
+            //convertendo as coordenadas locais para coordenadas globais, levando em consideração a posição atual da forma e sua origem de exibição.
+            const adjustedShapePointX = shape.x + shapePoint.x - shape.displayOriginX;
+            const adjustedShapePointY = shape.y + shapePoint.y - shape.displayOriginY;
+
+            const isWithinX = Math.abs(adjustedShapePointX - destinationPoint.x) <= tolerance;
+            const isWithinY = Math.abs(adjustedShapePointY - destinationPoint.y) <= tolerance;
+
+            if (!isWithinX || !isWithinY) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 }

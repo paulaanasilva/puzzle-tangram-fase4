@@ -2,10 +2,13 @@
 import { Scene } from 'phaser';
 import Background from './class/background';
 import createButton from './class/createButton';
+import CreateElements from './class/createElements';
+
 
 export class BaseScene extends Scene {
     background: Background;
     createButton: createButton;
+    createElements: CreateElements;
     botaoGirar: Phaser.GameObjects.Image;
     nextButton: Phaser.GameObjects.Image;
     playButton: Phaser.GameObjects.Image;
@@ -14,6 +17,7 @@ export class BaseScene extends Scene {
         super(key);
         this.background = new Background(this);
         this.createButton = new createButton(this);
+        this.createElements = new CreateElements(this);
     }
 
     preload() {
@@ -35,13 +39,21 @@ export class BaseScene extends Scene {
         this.botaoGirar = this.createButton.createButtonLeft(925, 200, () => {
             this.shapeActions.rotateSelectedShapeLeft();
         });
-        
+
         this.nextButton = this.createButton.createButtonNext(925, 680, () => {
             this.scene.start('Level2');
         });
 
         this.playButton = this.createButton.createButtonPlay(820, 680, () => {
-            console.log('play');
+            const allShapesCorrect = this.createElements.validateAllShapes();
+            if (allShapesCorrect) {
+                console.log('Todas as formas estão na posição correta!');
+                // Adicione lógica para avançar no jogo ou mostrar uma mensagem de sucesso
+            } else {
+                console.log('Algumas formas não estão na posição correta.');
+                // Adicione lógica para mostrar uma mensagem de erro ou permitir ajustes
+            }
         });
+
     }
 }
