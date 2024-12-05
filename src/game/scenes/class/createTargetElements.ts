@@ -6,23 +6,46 @@ export default class CreateTargetElements {
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
     }
- 
+
+    drawDashedLine(graphics, x1, y1, x2, y2, dashLength, gapLength) {
+        const totalLength = Phaser.Math.Distance.Between(x1, y1, x2, y2);
+        const dx = (x2 - x1) / totalLength;
+        const dy = (y2 - y1) / totalLength;
+
+        let currentLength = 0;
+        while (currentLength < totalLength) {
+            const nextLength = Math.min(currentLength + dashLength, totalLength);
+            const startX = x1 + dx * currentLength;
+            const startY = y1 + dy * currentLength;
+            const endX = x1 + dx * nextLength;
+            const endY = y1 + dy * nextLength;
+
+            graphics.moveTo(startX, startY);
+            graphics.lineTo(endX, endY);
+            currentLength += dashLength + gapLength;
+        }
+    }
+
     createTargetOutlined() {
         const graphics = this.scene.add.graphics();
 
         const points = [
-            { x: 500, y: 500 },  
-            { x: 500, y: 100 }, 
-            { x: 900, y: 500 },   
+            { x: 500, y: 500 },
+            { x: 500, y: 100 },
+            { x: 900, y: 500 },
         ];
 
-        graphics.lineStyle(4, 0x000000); // Define a cor e a espessura do contorno
+        graphics.lineStyle(2, 0x000000); // Define a cor e a espessura do contorno
+
+        const dashLength = 5; // Comprimento do traço
+        const gapLength = 2;   // Comprimento do espaço entre os traços
+
         graphics.beginPath();
-        graphics.moveTo(points[0].x, points[0].y);
-        for (let i = 1; i < points.length; i++) {
-            graphics.lineTo(points[i].x, points[i].y);
+        for (let i = 0; i < points.length; i++) {
+            const start = points[i];
+            const end = points[(i + 1) % points.length]; // Conecta o último ponto ao primeiro
+            this.drawDashedLine(graphics, start.x, start.y, end.x, end.y, dashLength, gapLength);
         }
-        graphics.closePath();
         graphics.strokePath();
 
         const rect = new Phaser.Geom.Polygon(points.map(p => [p.x, p.y]).flat());
@@ -31,6 +54,7 @@ export default class CreateTargetElements {
         return { graphics, rect };
     }
 
+    /*
     createSquare55() {
         //Aqui faz o desneho da forma
         const points = [
@@ -132,4 +156,5 @@ export default class CreateTargetElements {
 
         return { graphics, rect };
     }
+    */
 }

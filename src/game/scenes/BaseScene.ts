@@ -2,22 +2,29 @@
 import { Scene } from 'phaser';
 import Background from './class/background';
 import createButton from './class/createButton';
-import CreateElements from './class/createElements';
+import createElements from './class/createElements';
+import createTargetElements from './class/createTargetElements';
 
 
 export class BaseScene extends Scene {
     background: Background;
     createButton: createButton;
-    createElements: CreateElements;
+    createElements: createElements;
+    createTargetElements: createTargetElements;
     botaoGirar: Phaser.GameObjects.Image;
     nextButton: Phaser.GameObjects.Image;
     playButton: Phaser.GameObjects.Image;
+    createTargetOutlined: Phaser.Geom.Polygon; 
+    shapeActions: any;
+   
+
 
     constructor(key: string) {
         super(key);
         this.background = new Background(this);
         this.createButton = new createButton(this);
-        this.createElements = new CreateElements(this);
+        this.createElements = new createElements(this);
+        this.createTargetElements = new createTargetElements(this);
     }
 
     preload() {
@@ -30,6 +37,8 @@ export class BaseScene extends Scene {
 
     create() {
         this.background.createBackground();
+
+        this.createTargetOutlined = this.createTargetElements.createTargetOutlined();
 
         // Botão para girar objetos
         this.botaoGirar = this.createButton.createButtonRight(925, 100, () => {
@@ -45,9 +54,7 @@ export class BaseScene extends Scene {
         });
 
         this.playButton = this.createButton.createButtonPlay(820, 680, () => {
-            console.log('Pontos Atuais:');
-            this.createElements.logAllShapesPointsPositions();
-
+            this.createElements.logAllShapesPointsPositions()
             const allShapesValid = this.createElements.validateAllShapes();
             if (allShapesValid) {
                 console.log('Todas as formas estão na posição correta!');
@@ -55,6 +62,5 @@ export class BaseScene extends Scene {
                 console.log('Não estão na posição correta.');
             }
         });
-
     }
 }

@@ -6,6 +6,7 @@ export default class CreateElements {
     private scene: Phaser.Scene;
     private fitObject: fitShape;
     private shapes: Phaser.GameObjects.Polygon[];
+    selectedShape: Phaser.GameObjects.Polygon;
 
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
