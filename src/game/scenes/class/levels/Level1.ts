@@ -37,9 +37,9 @@ export class Level1 extends BaseScene {
 
 
         this.square1 = this.createElements.createSquare1(this.createTargetOutlined.rect);
-        this.createElements.createSquare2(this.createTargetOutlined.rect);
+        //this.createElements.createSquare2(this.createTargetOutlined.rect);
         this.createElements.createTriangle1(this.createTargetOutlined.rect);
-        this.createElements.createTriangle2(this.createTargetOutlined.rect);
+        //this.createElements.createTriangle2(this.createTargetOutlined.rect);
 
         this.inputHandler.setupInputHandlers();
         

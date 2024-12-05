@@ -45,13 +45,14 @@ export class BaseScene extends Scene {
         });
 
         this.playButton = this.createButton.createButtonPlay(820, 680, () => {
-            const allShapesCorrect = this.createElements.validateAllShapes();
-            if (allShapesCorrect) {
+            console.log('Pontos Atuais:');
+            this.createElements.logAllShapesPointsPositions();
+
+            const allShapesValid = this.createElements.validateAllShapes();
+            if (allShapesValid) {
                 console.log('Todas as formas estão na posição correta!');
-                // Adicione lógica para avançar no jogo ou mostrar uma mensagem de sucesso
             } else {
-                console.log('Algumas formas não estão na posição correta.');
-                // Adicione lógica para mostrar uma mensagem de erro ou permitir ajustes
+                console.log('Não estão na posição correta.');
             }
         });
 
