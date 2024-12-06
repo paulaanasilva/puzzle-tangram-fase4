@@ -4,6 +4,7 @@ import Background from './class/background';
 import createButton from './class/createButton';
 import positionValidation from './class/positionValidation';
 import createTargetElements from './class/createTargetElements';
+import showModal from './class/showModal';
 
 
 export class BaseScene extends Scene {
@@ -16,6 +17,7 @@ export class BaseScene extends Scene {
     playButton: Phaser.GameObjects.Image;
     createTargetOutlined: Phaser.Geom.Polygon; 
     shapeActions: any;
+    showModal: showModal;
    
 
 
@@ -25,6 +27,7 @@ export class BaseScene extends Scene {
         this.createButton = new createButton(this);
         this.positionValidation = new positionValidation(this);
         this.createTargetElements = new createTargetElements(this);
+        this.showModal = new showModal(this);
     }
 
     preload() {
@@ -64,8 +67,10 @@ export class BaseScene extends Scene {
             }
 
             if (allShapesValid) {
+                this.showModal.showModal('Parabéns! Você completou a fase! :)');
                 console.log('Todas as formas estão na posição correta!');
             } else {
+                this.showModal.showModal('Nem todas formas estão encaixadas :(');
                 console.log('Não estão na posição correta.');
             }
         });

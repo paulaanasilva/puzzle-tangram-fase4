@@ -57,4 +57,24 @@ export default class createButton {
     
         return button;
     }
+
+    /*
+    private addTooltip(button: Phaser.GameObjects.Image, tooltipText: string) {
+        const tooltip = this.scene.add.text(button.x, button.y - 30, tooltipText, {
+            fontSize: '16px',
+            color: '#ffffff',
+            backgroundColor: '#000000',
+            padding: { x: 5, y: 5 },
+            align: 'center'
+        }).setOrigin(0.5).setVisible(false);
+
+        button.on('pointerover', () => {
+            tooltip.setVisible(true);
+        });
+
+        button.on('pointerout', () => {
+            tooltip.setVisible(false);
+        });
+    }
+     */
 }

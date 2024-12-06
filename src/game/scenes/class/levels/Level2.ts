@@ -51,13 +51,13 @@ export class Level2 extends BaseScene {
 
         this.inputHandler.setupInputHandlers();
         
-        
+        /*
         for (let x = 0; x < this.scale.width; x += 50) {
             for (let y = 0; y < this.scale.height; y += 50) {
                 const dot = this.add.circle(x, y, 2, 0x000000);
                 dot.setScrollFactor(0);
             }
         }
-                
+        */      
     }
 }

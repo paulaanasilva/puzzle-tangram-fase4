@@ -26,6 +26,11 @@ export default class PositionValidation {
 
     //Essa função é útil para determinar a posição exata dos pontos de um polígono após ele ter sido movido e rotacionado na cena.
     getShapePointsPositions(shape: Phaser.GameObjects.Polygon): { x: number, y: number }[] {
+        if (!shape || !shape.geom) {
+            console.error('Shape or shape.geom is null');
+            return [];
+        }
+        
         const points = shape.geom.points;
         const positions = points.map(point => {
             const rotatedPoint = Phaser.Math.RotateAround({ x: point.x, y: point.y }, shape.displayOriginX, shape.displayOriginY, shape.rotation);
