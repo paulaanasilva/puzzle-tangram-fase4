@@ -54,8 +54,15 @@ export class BaseScene extends Scene {
         });
 
         this.playButton = this.createButton.createButtonPlay(820, 680, () => {
-            this.positionValidation.logAllShapesPointsPositions()
-            const allShapesValid = this.positionValidation.validateAllShapes();
+            this.positionValidation.logAllShapesPointsPositions();
+            let allShapesValid = false;
+
+            if (this.scene.key === 'Level1') {
+                allShapesValid = this.positionValidation.validateShapesLevel1();
+            } else {
+                allShapesValid = this.positionValidation.validateShapesLevel2();
+            }
+
             if (allShapesValid) {
                 console.log('Todas as formas estão na posição correta!');
             } else {

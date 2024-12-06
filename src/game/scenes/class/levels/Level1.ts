@@ -32,6 +32,7 @@ export class Level1 extends BaseScene {
     create() {
         super.create();
         
+        //Desenha as 4 peças do tangrm - nível 1
         this.square1 = this.createElements.createSquare1(this.createTargetOutlined.rect);
         this.positionValidation.addShape(this.square1);
 

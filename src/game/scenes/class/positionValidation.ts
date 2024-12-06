@@ -69,7 +69,29 @@ export default class PositionValidation {
         return true;
     }
 
-    validateAllShapes(): boolean {
+    validateShapesLevel2(): boolean {
+        const destinationPoints = [
+            { x: 500, y: 100 },
+            { x: 600, y: 200 },
+            { x: 700, y: 300 },
+            { x: 900, y: 500 },
+			{ x: 500, y: 200 },
+			{ x: 600, y: 300 },
+			{ x: 500, y: 300 },
+			{ x: 500, y: 500 },
+        ];
+
+        const allShapePoints: { x: number, y: number }[] = [];
+
+        this.shapes.forEach((shape) => {
+            const positions = this.getShapePointsPositions(shape);
+            allShapePoints.push(...positions);
+        });
+
+        return this.isShapeInCorrectPosition(allShapePoints, destinationPoints);
+    }
+
+    validateShapesLevel1(): boolean {
         const destinationPoints = [
             { x: 500, y: 100 },
             { x: 600, y: 200 },

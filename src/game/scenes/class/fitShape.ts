@@ -7,7 +7,7 @@ export default class fitShape {
         this.scene = scene;
     }
 
-    enablePartialFit(shape: Phaser.GameObjects.GameObject, outlinedRect: Phaser.Geom.Rectangle) {
+    enablePartialFit(shape: Phaser.GameObjects.GameObject, outlinedRect: Phaser.Geom.Polygon) {
         const tolerance = 20; // 20 px de tolerância
         const gridSize = 50; // Tamanho da grade de 50 px
     
