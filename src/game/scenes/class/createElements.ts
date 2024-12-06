@@ -1,36 +1,23 @@
 import Phaser from 'phaser';
 import fitShape from './fitShape';
 
-
 export default class CreateElements {
     private scene: Phaser.Scene;
     private fitObject: fitShape;
-    private shapes: Phaser.GameObjects.Polygon[];
     selectedShape: Phaser.GameObjects.Polygon;
 
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
         this.fitObject = new fitShape(scene);
-        this.shapes = [];
     }
 
+    /*
     removeDuplicatePoints(points: { x: number, y: number }[]): { x: number, y: number }[] {
         const uniquePoints = points.filter((point, index, self) =>
             index === self.findIndex((p) => Math.abs(p.x - point.x) < 1 && Math.abs(p.y - point.y) < 1)
         );
         return uniquePoints;
     }
-
-    /*
-    getShapePointsPositions(shape: Phaser.GameObjects.Polygon): { x: number, y: number }[] {
-        const points = shape.geom.points;
-        const positions = points.map(point => ({
-            x: shape.x + point.x - shape.displayOriginX,
-            y: shape.y + point.y - shape.displayOriginY
-        }));
-        return positions;
-    }
-    */
 
     //Essa função é útil para determinar a posição exata dos pontos de um polígono após ele ter sido movido e rotacionado na cena.
     getShapePointsPositions(shape: Phaser.GameObjects.Polygon): { x: number, y: number }[] {
@@ -108,6 +95,7 @@ export default class CreateElements {
             });
         });
     }
+    */
 
     createSquare2(outlinedRect: Phaser.Geom.Rectangle) {
         const points = [
@@ -132,8 +120,6 @@ export default class CreateElements {
         });
 
         this.fitObject.enablePartialFit(square, outlinedRect);
-
-        this.shapes.push(square);
 
         return square;
     }
@@ -162,8 +148,6 @@ export default class CreateElements {
 
         this.fitObject.enablePartialFit(square, outlinedRect);
 
-        this.shapes.push(square);
-
         return square;
     }
 
@@ -190,8 +174,6 @@ export default class CreateElements {
         });
 
         this.fitObject.enablePartialFit(triangle, outlinedRect);
-
-        this.shapes.push(triangle);
 
         return triangle;
     }
@@ -220,8 +202,6 @@ export default class CreateElements {
         });
 
         this.fitObject.enablePartialFit(triangle, outlinedRect);
-
-        this.shapes.push(triangle);
 
         return triangle;
     }

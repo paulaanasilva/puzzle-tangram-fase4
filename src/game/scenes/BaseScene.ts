@@ -2,15 +2,15 @@
 import { Scene } from 'phaser';
 import Background from './class/background';
 import createButton from './class/createButton';
-import createElements from './class/createElements';
+import positionValidation from './class/positionValidation';
 import createTargetElements from './class/createTargetElements';
 
 
 export class BaseScene extends Scene {
     background: Background;
     createButton: createButton;
-    createElements: createElements;
     createTargetElements: createTargetElements;
+    positionValidation: positionValidation;
     botaoGirar: Phaser.GameObjects.Image;
     nextButton: Phaser.GameObjects.Image;
     playButton: Phaser.GameObjects.Image;
@@ -23,7 +23,7 @@ export class BaseScene extends Scene {
         super(key);
         this.background = new Background(this);
         this.createButton = new createButton(this);
-        this.createElements = new createElements(this);
+        this.positionValidation = new positionValidation(this);
         this.createTargetElements = new createTargetElements(this);
     }
 
@@ -54,8 +54,8 @@ export class BaseScene extends Scene {
         });
 
         this.playButton = this.createButton.createButtonPlay(820, 680, () => {
-            this.createElements.logAllShapesPointsPositions()
-            const allShapesValid = this.createElements.validateAllShapes();
+            this.positionValidation.logAllShapesPointsPositions()
+            const allShapesValid = this.positionValidation.validateAllShapes();
             if (allShapesValid) {
                 console.log('Todas as formas estão na posição correta!');
             } else {
