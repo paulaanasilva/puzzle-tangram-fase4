@@ -37,7 +37,6 @@ export class Level1 extends BaseScene {
                 dot.setScrollFactor(0);
             }
         }
-        */
-        
+        */        
     }
 }

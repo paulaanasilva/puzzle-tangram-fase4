@@ -21,12 +21,27 @@ export default class CreateElements {
         return uniquePoints;
     }
 
+    /*
     getShapePointsPositions(shape: Phaser.GameObjects.Polygon): { x: number, y: number }[] {
         const points = shape.geom.points;
         const positions = points.map(point => ({
             x: shape.x + point.x - shape.displayOriginX,
             y: shape.y + point.y - shape.displayOriginY
         }));
+        return positions;
+    }
+    */
+
+    //Essa função é útil para determinar a posição exata dos pontos de um polígono após ele ter sido movido e rotacionado na cena.
+    getShapePointsPositions(shape: Phaser.GameObjects.Polygon): { x: number, y: number }[] {
+        const points = shape.geom.points;
+        const positions = points.map(point => {
+            const rotatedPoint = Phaser.Math.RotateAround({ x: point.x, y: point.y }, shape.displayOriginX, shape.displayOriginY, shape.rotation);
+            return {
+                x: shape.x + rotatedPoint.x - shape.displayOriginX,
+                y: shape.y + rotatedPoint.y - shape.displayOriginY
+            };
+        });
         return positions;
     }
 
