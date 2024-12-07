@@ -52,12 +52,6 @@ export class Level1 extends BaseScene {
 
         this.inputHandler.setupInputHandlers();
 
-        // Adiciona um botão para finalizar a fase (apenas para exemplo)
-        const finishButton = this.add.text(100, 100, 'Finalizar Fase', { font: '24px Arial', fill: '#ffffff' }).setInteractive();
-        finishButton.on('pointerdown', () => {
-            this.showModal.showModal();
-        });
-
         /*
         for (let x = 0; x < this.scale.width; x += 50) {
             for (let y = 0; y < this.scale.height; y += 50) {

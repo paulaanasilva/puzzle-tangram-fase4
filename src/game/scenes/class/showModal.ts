@@ -40,7 +40,11 @@ export default class showModal {
         // Adiciona um botão para ir para a fase 'Level2'
         const level2Button = this.scene.add.text(100, 150, 'Próxima Fase', { font: '15px Arial', fill: '#00ff00' }).setOrigin(0.5).setInteractive();
         level2Button.on('pointerdown', () => {
-            this.scene.scene.start('Level2');
+            if (this.scene.scene.key === 'Level2') {
+                this.scene.scene.start('EndTangram');
+            } else {
+                this.scene.scene.start('Level2');
+            }
         });
         this.modalContainer.add(level2Button);
     }

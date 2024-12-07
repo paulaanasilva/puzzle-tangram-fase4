@@ -7,8 +7,8 @@ export class EndTangram extends Scene {
     background: Background;
     createButton: createButton;
 
-    constructor(key: string) {
-        super(key);
+    constructor() {
+        super('EndTangram');
         this.background = new Background(this);
         this.createButton = new createButton(this);
     }

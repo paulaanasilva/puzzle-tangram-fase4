@@ -1,5 +1,6 @@
 import { Level1 } from './scenes/class/levels/Level1';
 import { Level2 } from './scenes/class/levels/Level2';
+import { EndTangram } from './scenes/EndTangram';
 import { StartTangram } from './scenes/StartTangram';
 import { Game } from 'phaser';
 
@@ -23,6 +24,7 @@ const config: Phaser.Types.Core.GameConfig = {
         StartTangram,
         Level1,
         Level2,
+        EndTangram
     ]
 };
 

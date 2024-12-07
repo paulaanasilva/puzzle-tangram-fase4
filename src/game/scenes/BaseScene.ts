@@ -53,7 +53,11 @@ export class BaseScene extends Scene {
         });
 
         this.nextButton = this.createButton.createButtonNext(925, 680, () => {
-            this.scene.start('Level2');
+            if (this.scene.key === 'Level2') {
+                this.scene.start('EndTangram');
+            } else {
+                this.scene.start('Level2');
+            }
         });
 
         this.playButton = this.createButton.createButtonPlay(820, 680, () => {
@@ -62,7 +66,7 @@ export class BaseScene extends Scene {
 
             if (this.scene.key === 'Level1') {
                 allShapesValid = this.positionValidation.validateShapesLevel1();
-            } else {
+            } else if (this.scene.key === 'Level2') {
                 allShapesValid = this.positionValidation.validateShapesLevel2();
             }
 
@@ -73,6 +77,8 @@ export class BaseScene extends Scene {
                 this.showModal.showModal('Nem todas formas estão encaixadas :(');
                 console.log('Não estão na posição correta.');
             }
+
+
         });
     }
 }
